@@ -1,21 +1,18 @@
-
 /* eslint-disable no-unused-vars */
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import FileDisplay from "./components/FileDisplay";
 import Header from "./components/Header";
 import HomePage from "./components/HomePage";
 import Information from "./components/Information";
 import Transcribing from "./components/Transcribing";
-import { query } from "./utils/whisper.worker";
+import { MessageTypes } from "./utils/presets";
 
 function App() {
     const [file, setFile] = useState(null);
     const [audioStream, setAudioStream] = useState(null);
-    const [output, setOutput] = useState(null);
+    const [output, setOutput] = useState("");
     const [loading, setLoading] = useState(false);
-    const [transcription, setTranscription] = useState("");
-    const [finished, setFinished] = useState(false);
-    const [downloading, setDownloading] = useState(false);
+    const [downloading, setDownloading] = useState(null);
 
     const isAudioAvailable = file || audioStream;
 
@@ -27,33 +24,53 @@ function App() {
     // transcription
     const worker = useRef(null);
 
-    /*     async function readAudioFrom(file) {
-        const sampling_rate = 16000;
-        const audioCTX = new AudioContext({ sampleRate: sampling_rate });
+    useEffect(() => {
+        if (!worker.current) {
+            worker.current = new Worker(
+                new URL("./utils/whisper.worker.js", import.meta.url),
+                {
+                    type: "module",
+                }
+            );
+        }
 
-        const arrayBuffer = await file.arrayBuffer();
+        const onMessageReceived = async (e) => {
+            switch (e.data.type) {
+                case "DOWNLOADING":
+                    setDownloading(true);
+                    console.log("DOWNLOADING");
+                    break;
+                case "LOADING":
+                    setLoading(true);
+                    console.log("LOADING");
+                    break;
+                case "RESULT":
+                    setOutput(e.data.results);
+                    // console.log(e.data.results);
+                    break;
+                case "INFERENCE_DONE":
+                    setOutput(true);
+                    console.log("DONE");
+                    break;
+            }
+        };
 
-        const decoded = await audioCTX.decodeAudioData(arrayBuffer);
+        worker.current.addEventListener("message", onMessageReceived);
 
-        const audioData = decoded.getChannelData(0);
-
-        const audioBlob = new Blob([audioData], { type: file.type });
-
-        return audioBlob;
-    } */
+        return () =>
+            worker.current.removeEventListener("message", onMessageReceived);
+    });
 
     async function handleFormSubmission() {
         if (!file && !audioStream) return;
 
         setLoading(true);
         const audio = file || audioStream;
-        await query(audio).then((res) => {
-            const answer = JSON.stringify(res);
-            setTranscription(answer);
-        });
-        console.log("transcription", transcription);
 
-        setLoading(false);
+        worker.current.postMessage({
+            type: MessageTypes.INFERENCE_REQUEST,
+            audio,
+        });
     }
 
     return (

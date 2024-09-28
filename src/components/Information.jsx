@@ -16,7 +16,7 @@ const Information = () => {
                         setIsTranscription(true);
                     }}
                     className={
-                        "px-4 duration-200 py-1 font-semibold text-lg " +
+                        "px-4 py-1 font-semibold text-lg duration-300 " +
                         (isTranscription
                             ? "bg-violet-400 text-white"
                             : "text-violet-400 hover:text-violet-500")
@@ -29,7 +29,7 @@ const Information = () => {
                         setIsTranscription(false);
                     }}
                     className={
-                        "px-4 duration-200 py-1 font-semibold text-lg " +
+                        "px-4 py-1 font-semibold text-lg duration-300 " +
                         (!isTranscription
                             ? "bg-violet-400 text-white"
                             : "text-violet-400 hover:text-violet-500")
