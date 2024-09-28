@@ -44,10 +44,12 @@ function App() {
                     setLoading(true);
                     console.log("LOADING");
                     break;
-                case "RESULT":
-                    setOutput(e.data.results);
-                    // console.log(e.data.results);
+                case "RESULT": {
+                    const resultText = e.data.results.text;
+                    setOutput(resultText?.trim());
+                    console.log(resultText);
                     break;
+                }
                 case "INFERENCE_DONE":
                     setOutput(true);
                     console.log("DONE");
@@ -83,7 +85,7 @@ function App() {
                     setLoading={setLoading}
                 />
                 {output ? (
-                    <Information />
+                    <Information output={output} />
                 ) : loading ? (
                     <Transcribing />
                 ) : isAudioAvailable ? (
