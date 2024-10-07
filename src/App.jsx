@@ -46,7 +46,7 @@ function App() {
                     break;
                 case "RESULT": {
                     const resultText = e.data.results.text;
-                    setOutput(resultText?.trim());
+                    setOutput(resultText);
                     console.log(resultText);
                     break;
                 }
@@ -102,7 +102,6 @@ function App() {
                     />
                 )}
             </section>
-            <footer></footer>
         </div>
     );
 }

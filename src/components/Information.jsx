@@ -32,8 +32,8 @@ const Information = (props) => {
                     break;
                 case "update": {
                     const resultText = e.data.output;
-                    console.log("resultText", resultText?.translation_text);
                     setTranslation(resultText?.translation_text);
+                    console.log("resultText", resultText);
                     break;
                 }
                 case "complete":
@@ -111,7 +111,7 @@ const Information = (props) => {
                     Translation
                 </button>
             </div>
-            <div className="my-8 flex flex-col">
+            <div className="my-2 flex flex-col">
                 {isTranscription ? (
                     <Transcription {...props} textElement={textElement} />
                 ) : (

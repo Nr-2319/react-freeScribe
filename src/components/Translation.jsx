@@ -10,7 +10,7 @@ const Translation = (props) => {
     } = props;
 
     return (
-        <div className="flex flex-col gap-2 max-w-[400px] w-full mx-auto">
+        <div className="flex flex-col gap-2 max-w-[500px] w-full mx-auto">
             {!translating && (
                 <div className="flex flex-col">
                     <p className="text-xs sm:text-sm font-medium text-slate-500 mr-auto mb-1">
@@ -46,7 +46,7 @@ const Translation = (props) => {
             )}
 
             {textElement && !translating && (
-                <p className="text-justify p-2 my-1">{textElement}</p>
+                <div className="text-justify bg-white shadow p-2 px-4 mt-2 rounded">{textElement}</div>
             )}
 
             {translating && (
