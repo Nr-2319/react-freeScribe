@@ -79,7 +79,7 @@ const Information = (props) => {
     }
 
     return (
-        <main className="flex-1 p-4 flex flex-col gap-3 sm:gap-4 md:gap-5 justify-center text-center pb-40 max-w-full mx-auto max-w-prose w-full">
+        <main className="flex-1 p-4 flex flex-col gap-3 sm:gap-4 md:gap-5 justify-center text-center pb-40 max-w-full mx-auto w-full">
             <h1 className="font-semibold text-4xl sm:text-5xl md:text-6xl whitespace-nowrap">
                 Your <span className="text-violet-400 bold">Transcription</span>
             </h1>
